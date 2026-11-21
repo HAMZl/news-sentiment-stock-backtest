@@ -90,7 +90,7 @@ def car_plot(paths: dict[str, pd.DataFrame], path: Path):
         ax.set_xlim(cp.index[0], cp.index[-1] + 3)
     axes[0].set_ylabel("cumulative abnormal return vs SPY (%)")
     axes[0].text(0.5, axes[0].get_ylim()[1] * 0.92, "news\nwindow", ha="center", fontsize=8, color=INK_2, va="top")
-    fig.suptitle("Prices move before and on the news day - there is no positive drift left to harvest",
+    fig.suptitle("Most of the price move happens before and on the news day",
                  x=0.01, ha="left", fontweight="bold")
     _save(fig, path)
 

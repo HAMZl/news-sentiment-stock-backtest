@@ -46,16 +46,28 @@ def finbert_scores(texts: pd.Series, batch_size: int = 64) -> np.ndarray:
     pos, neg = labels["positive"], labels["negative"]
     torch.set_num_threads(max(1, torch.get_num_threads()))
 
-    out = np.empty(len(texts))
     texts = list(texts)
+    out = np.full(len(texts), np.nan)
+    # Sort by length so each batch needs almost no padding (several-x faster on CPU).
+    order = np.argsort([len(t) for t in texts])
+    ckpt = CACHE / "finbert_partial.npy"
+    if ckpt.exists():                       # resume an interrupted run
+        prev = np.load(ckpt)
+        if len(prev) == len(out):
+            out = prev
     with torch.inference_mode():
-        for i in range(0, len(texts), batch_size):
-            enc = tok(texts[i:i + batch_size], padding=True, truncation=True,
+        for b, i in enumerate(range(0, len(texts), batch_size)):
+            idx = order[i:i + batch_size]
+            if not np.isnan(out[idx]).any():
+                continue
+            enc = tok([texts[k] for k in idx], padding=True, truncation=True,
                       max_length=96, return_tensors="pt")
             p = model(**enc).logits.softmax(-1).numpy()
-            out[i:i + batch_size] = p[:, pos] - p[:, neg]
-            if (i // batch_size) % 50 == 0:
-                print(f"  finbert {i:>6}/{len(texts)}", flush=True)
+            out[idx] = p[:, pos] - p[:, neg]
+            if b % 25 == 0:
+                np.save(ckpt, out)
+                print(f"  finbert {i + len(idx):>6}/{len(texts)}", flush=True)
+    ckpt.unlink(missing_ok=True)
     return out
 
 
