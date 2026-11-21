@@ -1,0 +1,13 @@
+target,model,accuracy,auc,n_train,n_test
+Same-day reaction (not tradeable),Majority class,0.529621503017005,0.5,8475,3646
+Same-day reaction (not tradeable),Naive Bayes (TF-IDF),0.5482720789906748,0.5539227246717287,8475,3646
+Same-day reaction (not tradeable),Logistic regression (TF-IDF),0.5408667032364235,0.5421346965952172,8475,3646
+Same-day reaction (not tradeable),Sentiment score only,0.5112452002194185,0.5189404725417576,8475,3646
+"Next session, open->close",Majority class,0.5222161272627537,0.5,8472,3646
+"Next session, open->close",Naive Bayes (TF-IDF),0.5,0.4959118334475007,8472,3646
+"Next session, open->close",Logistic regression (TF-IDF),0.49451453647833243,0.493494721367307,8472,3646
+"Next session, open->close",Sentiment score only,0.4934174437739989,0.4876560555335797,8472,3646
+Next 5 sessions,Majority class,0.5222161272627537,0.5,8475,3646
+Next 5 sessions,Naive Bayes (TF-IDF),0.502194185408667,0.49995537824773995,8475,3646
+Next 5 sessions,Logistic regression (TF-IDF),0.4961601755348327,0.4982094014414032,8475,3646
+Next 5 sessions,Sentiment score only,0.49177180471749865,0.4903086378064429,8475,3646

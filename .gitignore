@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+cache/
+results/headlines_scored.csv.gz
+.ipynb_checkpoints/
